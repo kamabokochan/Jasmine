@@ -117,79 +117,85 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
+})({"js/index.js":[function(require,module,exports) {
+class MMD_SETTING {
+  constructor() {
+    this.init();
   }
 
-  return bundleURL;
-}
+  async init() {
+    // シーンの作成
+    this.scene = new THREE.Scene(); // 光の作成
 
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+    const ambient = new THREE.AmbientLight(0xeeeeee);
+    this.scene.add(ambient); // 画面表示の設定
 
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
+    this.renderer = new THREE.WebGLRenderer({
+      alpha: true
+    });
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setClearColor(0xcccccc, 0); // documentにMMDをセットする
 
-  return '/';
-}
+    document.body.appendChild(this.renderer.domElement); // カメラを作成 (視野角, 画面のアスペクト比, カメラに映る最短距離, カメラに映る最遠距離)
 
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
+    this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
+    this.camera.position.set(0, 18, 50); // カメラコントローラーを作成
 
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
+    const controls = new THREE.OrbitControls(this.camera); // 滑らかにカメラコントローラーを制御する
 
-function updateLink(link) {
-  var newLink = link.cloneNode();
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.2; // 毎フレーム時に実行されるループイベントです
 
-  newLink.onload = function () {
-    link.remove();
-  };
+    const tick = () => {
+      // カメラコントローラーを更新
+      controls.update(); // レンダリング
 
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
+      this.renderer.render(this.scene, this.camera);
+      requestAnimationFrame(tick);
+    };
 
-var cssTimeout = null;
+    tick(); // モデルとモーションの読み込み準備
 
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
+    var modelFile = "./static/pmx/zenitsu/zenitsu_taifuku.pmx";
+    const loader = new THREE.MMDLoader();
 
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
+    const onProgress = xhr => {
+      if (xhr.lengthComputable) {
+        const percentComplete = xhr.loaded / xhr.total * 100;
+        console.log(Math.round(percentComplete, 2) + '% downloaded');
       }
-    }
+    };
 
-    cssTimeout = null;
-  }, 50);
+    const onError = xhr => {
+      console.log("ERROR");
+    };
+
+    const LoadPMX = () => {
+      return new Promise(resolve => {
+        loader.load(modelFile, object => {
+          this.mesh = object;
+          this.scene.add(this.mesh);
+          resolve(true);
+        }, onProgress, onError);
+      });
+    };
+
+    await LoadPMX();
+
+    const Render = () => {
+      requestAnimationFrame(Render);
+      this.renderer.clear();
+      this.renderer.render(this.scene, this.camera);
+    };
+
+    Render();
+  }
+
 }
 
-module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"css/style.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+new MMD_SETTING();
+},{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -393,5 +399,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/style.6b54f5b7.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/index.js"], null)
+//# sourceMappingURL=/js.00a46daa.js.map
