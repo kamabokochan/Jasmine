@@ -1,1 +1,1 @@
-{"version":3,"sources":["css/style.scss"],"names":[],"mappings":"AAEA;EACE;EACA","file":"style.6b54f5b7.css","sourceRoot":"../src","sourcesContent":["@charset \"utf-8\";\n\n* {\n  padding: 0;\n  margin: 0;\n}"]}
+{"version":3,"sources":["css/style.scss"],"names":[],"mappings":"AAEA;EACE;EACA;;;AAGF;EACE","file":"style.6b54f5b7.css","sourceRoot":"../src","sourcesContent":["@charset \"utf-8\";\n\n* {\n  padding: 0;\n  margin: 0;\n}\n\nbody {\n  overflow: hidden;\n}"]}
