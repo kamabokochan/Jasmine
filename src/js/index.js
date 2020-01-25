@@ -97,10 +97,10 @@ class MMD_SETTING {
     // モデルとモーションの読み込み準備
     const models = [
       {
-        path: "./static/pmx/zenitsu/zenitsu_taifuku.pmx"
+        path: "./pmx/zenitsu/zenitsu_taifuku.pmx"
       },
       {
-        path: "./static/pmx/zenitsu/zenitsu_haori.pmx"
+        path: "./pmx/zenitsu/zenitsu_haori.pmx"
       }
     ]
 
@@ -117,7 +117,7 @@ class MMD_SETTING {
   }
 
   LoadStage() {
-    const stage = './static/pmx/wasitsu/円窓ステージ.pmx';
+    const stage = './pmx/wasitsu/円窓ステージ.pmx';
 
     return new Promise(resolve => {
       this.loader.load(stage, (object) => {
@@ -129,7 +129,7 @@ class MMD_SETTING {
   }
 
   LoadVMD() {
-    const path = './static/vmd/極楽上半身ボーンが長い用.vmd';
+    const path = './vmd/極楽上半身ボーンが長い用.vmd';
 
     return new Promise(resolve => {
       this.loader.loadAnimation(path, this.mesh, (vmd) => {
