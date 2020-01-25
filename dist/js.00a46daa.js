@@ -126,11 +126,30 @@ class MMD_SETTING {
   async init() {
     // シーンの作成
     this.scene = new THREE.Scene();
+    this.clock = new THREE.Clock();
     this.setLight();
     this.setDisplay();
     this.setCamera();
     this.bindEvent();
+    this.loader = new THREE.MMDLoader();
     await this.LoadPMX();
+    await this.LoadStage();
+    this.vmd = await this.LoadVMD();
+    this.helper = new THREE.MMDAnimationHelper();
+    this.helper.add(this.mesh, {
+      animation: this.vmd,
+      physics: false
+    });
+    const mixer = this.helper.objects.get(this.mesh).mixer;
+    mixer.existingAction(this.vmd).setLoop(THREE.LoopOnce); // // VMD Loop Event
+    // mixer.addEventListener("loop", (event) => {
+    //   console.log("loop");
+    // });
+    // // VMD Loop Once Event
+    // mixer.addEventListener("finished", (event) => {
+    //   console.log("finished");
+    // });
+
     this.Render(); // documentにMMDをセットする
 
     document.body.appendChild(this.renderer.domElement);
@@ -194,19 +213,33 @@ class MMD_SETTING {
     }, {
       path: "./static/pmx/zenitsu/zenitsu_haori.pmx"
     }];
-    const stage = './static/pmx/wasitsu/円窓ステージ.pmx';
     var modelFile = models[1].path;
-    const loader = new THREE.MMDLoader();
     return new Promise(resolve => {
-      loader.load(modelFile, object => {
+      this.loader.load(modelFile, object => {
         this.mesh = object;
-        loader.load(stage, object => {
-          this.mesh.position.y = -10;
-          object.position.y = -10;
-          this.scene.add(this.mesh);
-          this.scene.add(object);
-          resolve(true);
-        }, this.onProgress, this.onError);
+        this.mesh.position.y = -10;
+        this.scene.add(this.mesh);
+        resolve(true);
+      }, this.onProgress, this.onError);
+    });
+  }
+
+  LoadStage() {
+    const stage = './static/pmx/wasitsu/円窓ステージ.pmx';
+    return new Promise(resolve => {
+      this.loader.load(stage, object => {
+        object.position.y = -10;
+        this.scene.add(object);
+        resolve(true);
+      }, this.onProgress, this.onError);
+    });
+  }
+
+  LoadVMD() {
+    const path = './static/vmd/極楽上半身ボーンが長い用.vmd';
+    return new Promise(resolve => {
+      this.loader.loadAnimation(path, this.mesh, vmd => {
+        resolve(vmd);
       }, this.onProgress, this.onError);
     });
   }
@@ -223,9 +256,10 @@ class MMD_SETTING {
   }
 
   Render() {
-    // requestAnimationFrame(this.Render);
+    requestAnimationFrame(() => this.Render());
     this.renderer.clear();
     this.renderer.render(this.scene, this.camera);
+    this.helper.update(this.clock.getDelta());
   }
 
 }
