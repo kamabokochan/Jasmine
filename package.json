@@ -17,5 +17,8 @@
   },
   "browserslist": [
     "last 1 Chrome versions"
-  ]
+  ],
+  "dependencies": {
+    "parcel-plugin-static-files-copy": "^2.3.1"
+  }
 }
