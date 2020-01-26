@@ -22,8 +22,14 @@ class MMD_SETTING {
       physics: false
     });
 
-    const mixer = this.helper.objects.get(this.mesh).mixer;
-    mixer.existingAction(this.vmd).setLoop(THREE.LoopOnce);
+    this.cameraAnimation = await this.LoadCamera();
+
+    this.helper.add(this.camera, {
+      animation: this.cameraAnimation
+    });
+
+    // const mixer = this.helper.objects.get(this.mesh).mixer;
+    // mixer.existingAction(this.vmd).setLoop(THREE.LoopOnce);
 
     // // VMD Loop Event
     // mixer.addEventListener("loop", (event) => {
@@ -117,7 +123,7 @@ class MMD_SETTING {
   }
 
   LoadStage() {
-    const stage = './pmx/wasitsu/円窓ステージ.pmx';
+    const stage = './pmx/冴木稲荷神社 ver1.10/models/《単独使用》冴木稲荷神社■春■.pmx';
 
     return new Promise(resolve => {
       this.loader.load(stage, (object) => {
@@ -129,10 +135,20 @@ class MMD_SETTING {
   }
 
   LoadVMD() {
-    const path = './vmd/極楽上半身ボーンが長い用.vmd';
+    const path = './vmd/motion/極楽上半身ボーンが長い用.vmd';
 
     return new Promise(resolve => {
       this.loader.loadAnimation(path, this.mesh, (vmd) => {
+        resolve(vmd);
+      }, this.onProgress, this.onError);
+    })
+  }
+
+  LoadCamera() {
+    const path = './vmd/camera/極楽浄土＿カメラ表情/カメラ（けみか式で調整）.vmd';
+
+    return new Promise(resolve => {
+      this.loader.loadAnimation(path, this.camera, (vmd) => {
         resolve(vmd);
       }, this.onProgress, this.onError);
     })
