@@ -143,8 +143,13 @@ class MMD_SETTING {
     this.cameraAnimation = await this.LoadCamera();
     this.helper.add(this.camera, {
       animation: this.cameraAnimation
-    }); // const mixer = this.helper.objects.get(this.mesh).mixer;
-    // mixer.existingAction(this.vmd).setLoop(THREE.LoopOnce);
+    });
+    const mixer = this.helper.objects.get(this.mesh).mixer; // mixer.existingAction(this.vmd).setLoop(THREE.LoopOnce);
+    // console.log(mixer)
+
+    var waveAction = mixer.clipAction(this.vmd);
+    console.log(waveAction); // document.getElementById('play').addEventListener('click', () => waveAction.enabled = true);
+    // document.getElementById('pause').addEventListener('click', () => waveAction.enabled = false);
     // // VMD Loop Event
     // mixer.addEventListener("loop", (event) => {
     //   console.log("loop");
@@ -153,10 +158,10 @@ class MMD_SETTING {
     // mixer.addEventListener("finished", (event) => {
     //   console.log("finished");
     // });
-
-    this.Render(); // documentにMMDをセットする
+    // documentにMMDをセットする
 
     document.body.appendChild(this.renderer.domElement);
+    this.Render();
   }
 
   setLight() {
@@ -306,7 +311,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54203" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62912" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

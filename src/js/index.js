@@ -28,9 +28,14 @@ class MMD_SETTING {
       animation: this.cameraAnimation
     });
 
-    // const mixer = this.helper.objects.get(this.mesh).mixer;
+    const mixer = this.helper.objects.get(this.mesh).mixer;
     // mixer.existingAction(this.vmd).setLoop(THREE.LoopOnce);
+    // console.log(mixer)
+    var waveAction = mixer.clipAction(this.vmd);
+    console.log(waveAction)
 
+    // document.getElementById('play').addEventListener('click', () => waveAction.enabled = true);
+    // document.getElementById('pause').addEventListener('click', () => waveAction.enabled = false);
     // // VMD Loop Event
     // mixer.addEventListener("loop", (event) => {
     //   console.log("loop");
@@ -40,9 +45,9 @@ class MMD_SETTING {
     // mixer.addEventListener("finished", (event) => {
     //   console.log("finished");
     // });
-    this.Render();
     // documentにMMDをセットする
     document.body.appendChild(this.renderer.domElement);
+    this.Render();
   }
 
   setLight() {
