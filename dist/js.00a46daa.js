@@ -140,8 +140,17 @@ class MMD_SETTING {
       animation: this.vmd,
       physics: false
     });
-    const mixer = this.helper.objects.get(this.mesh).mixer;
-    mixer.existingAction(this.vmd).setLoop(THREE.LoopOnce); // // VMD Loop Event
+    this.cameraAnimation = await this.LoadCamera();
+    this.helper.add(this.camera, {
+      animation: this.cameraAnimation
+    });
+    const mixer = this.helper.objects.get(this.mesh).mixer; // mixer.existingAction(this.vmd).setLoop(THREE.LoopOnce);
+    // console.log(mixer)
+
+    var waveAction = mixer.clipAction(this.vmd);
+    console.log(waveAction); // document.getElementById('play').addEventListener('click', () => waveAction.enabled = true);
+    // document.getElementById('pause').addEventListener('click', () => waveAction.enabled = false);
+    // // VMD Loop Event
     // mixer.addEventListener("loop", (event) => {
     //   console.log("loop");
     // });
@@ -149,10 +158,10 @@ class MMD_SETTING {
     // mixer.addEventListener("finished", (event) => {
     //   console.log("finished");
     // });
-
-    this.Render(); // documentにMMDをセットする
+    // documentにMMDをセットする
 
     document.body.appendChild(this.renderer.domElement);
+    this.Render();
   }
 
   setLight() {
@@ -209,9 +218,9 @@ class MMD_SETTING {
   LoadPMX() {
     // モデルとモーションの読み込み準備
     const models = [{
-      path: "./static/pmx/zenitsu/zenitsu_taifuku.pmx"
+      path: "./pmx/zenitsu/zenitsu_taifuku.pmx"
     }, {
-      path: "./static/pmx/zenitsu/zenitsu_haori.pmx"
+      path: "./pmx/zenitsu/zenitsu_haori.pmx"
     }];
     var modelFile = models[1].path;
     return new Promise(resolve => {
@@ -225,7 +234,7 @@ class MMD_SETTING {
   }
 
   LoadStage() {
-    const stage = './static/pmx/wasitsu/円窓ステージ.pmx';
+    const stage = './pmx/冴木稲荷神社 ver1.10/models/《単独使用》冴木稲荷神社■春■.pmx';
     return new Promise(resolve => {
       this.loader.load(stage, object => {
         object.position.y = -10;
@@ -236,9 +245,18 @@ class MMD_SETTING {
   }
 
   LoadVMD() {
-    const path = './static/vmd/極楽上半身ボーンが長い用.vmd';
+    const path = './vmd/motion/極楽上半身ボーンが長い用.vmd';
     return new Promise(resolve => {
       this.loader.loadAnimation(path, this.mesh, vmd => {
+        resolve(vmd);
+      }, this.onProgress, this.onError);
+    });
+  }
+
+  LoadCamera() {
+    const path = './vmd/camera/極楽浄土＿カメラ表情/カメラ（けみか式で調整）.vmd';
+    return new Promise(resolve => {
+      this.loader.loadAnimation(path, this.camera, vmd => {
         resolve(vmd);
       }, this.onProgress, this.onError);
     });
@@ -293,7 +311,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51786" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62912" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

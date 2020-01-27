@@ -20,6 +20,38 @@
   <title>Document</title>
 </head>
 
-<body></body>
+<body>
+  <!-- <button id="play">再生</button>
+  <button id="pause">停止</button>
+  <div class="ytplayer-wrap">
+    <div id="ytplayer"></div>
+  </div> -->
+</body>
+<script>
+  // Load the IFrame Player API code asynchronously.
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/player_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // Replace the 'ytplayer' element with an <iframe> and
+  // YouTube player after the API code downloads.
+  // https://www.tam-tam.co.jp/tipsnote/javascript/post9896.html
+  var player;
+  function onYouTubePlayerAPIReady() {
+    player = new YT.Player('ytplayer', {
+      height: '360',
+      width: '640',
+      videoId: 'BEULybZnLO8',
+      playerVars: {
+        controls: 0, // コントロールバーを表示しない
+        showinfo: 0 // 動画情報を表示しない
+        // autoplay: 1 // 自動再生の設定
+      }
+    });
+  }
+  // document.getElementById('play').addEventListener('click', () => player.playVideo());
+  // document.getElementById('pause').addEventListener('click', () => player.pauseVideo());
+</script>
 
 </html>
