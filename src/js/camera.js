@@ -22,11 +22,11 @@ class MMD_SETTING {
       physics: false
     });
 
-    // this.cameraAnimation = await this.LoadCamera();
+    this.cameraAnimation = await this.LoadCamera();
 
-    // this.helper.add(this.camera, {
-    //   animation: this.cameraAnimation
-    // });
+    this.helper.add(this.camera, {
+      animation: this.cameraAnimation
+    });
 
     const mixer = this.helper.objects.get(this.mesh).mixer;
     // mixer.existingAction(this.vmd).setLoop(THREE.LoopOnce);

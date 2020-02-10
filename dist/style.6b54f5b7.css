@@ -13,4 +13,13 @@ body {
   left: 0;
 }
 
+.controller-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.controller-wrap button {
+  padding: 10px 25px;
+}
+
 /*# sourceMappingURL=/style.6b54f5b7.css.map */
