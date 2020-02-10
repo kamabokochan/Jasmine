@@ -139,11 +139,11 @@ class MMD_SETTING {
     this.helper.add(this.mesh, {
       animation: this.vmd,
       physics: false
-    });
-    this.cameraAnimation = await this.LoadCamera();
-    this.helper.add(this.camera, {
-      animation: this.cameraAnimation
-    });
+    }); // this.cameraAnimation = await this.LoadCamera();
+    // this.helper.add(this.camera, {
+    //   animation: this.cameraAnimation
+    // });
+
     const mixer = this.helper.objects.get(this.mesh).mixer; // mixer.existingAction(this.vmd).setLoop(THREE.LoopOnce);
     // console.log(mixer)
 
@@ -182,7 +182,7 @@ class MMD_SETTING {
 
   setCamera() {
     // カメラを作成 (視野角, 画面のアスペクト比, カメラに映る最短距離, カメラに映る最遠距離)
-    this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
+    this.camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
     this.camera.position.set(0, 10, 50); // カメラコントローラーを作成
 
     const controls = new THREE.OrbitControls(this.camera); // 滑らかにカメラコントローラーを制御する
@@ -218,9 +218,9 @@ class MMD_SETTING {
   LoadPMX() {
     // モデルとモーションの読み込み準備
     const models = [{
-      path: "./pmx/zenitsu/zenitsu_taifuku.pmx"
+      path: "../pmx/zenitsu/zenitsu_taifuku.pmx"
     }, {
-      path: "./pmx/zenitsu/zenitsu_haori.pmx"
+      path: "../pmx/zenitsu/zenitsu_haori.pmx"
     }];
     var modelFile = models[1].path;
     return new Promise(resolve => {
@@ -234,7 +234,7 @@ class MMD_SETTING {
   }
 
   LoadStage() {
-    const stage = './pmx/冴木稲荷神社 ver1.10/models/《単独使用》冴木稲荷神社■春■.pmx';
+    const stage = '../pmx/冴木稲荷神社 ver1.10/models/《単独使用》冴木稲荷神社■春■.pmx';
     return new Promise(resolve => {
       this.loader.load(stage, object => {
         object.position.y = -10;
@@ -245,7 +245,7 @@ class MMD_SETTING {
   }
 
   LoadVMD() {
-    const path = './vmd/motion/極楽上半身ボーンが長い用.vmd';
+    const path = '../vmd/motion/極楽上半身ボーンが長い用.vmd';
     return new Promise(resolve => {
       this.loader.loadAnimation(path, this.mesh, vmd => {
         resolve(vmd);
@@ -254,7 +254,7 @@ class MMD_SETTING {
   }
 
   LoadCamera() {
-    const path = './vmd/camera/極楽浄土＿カメラ表情/カメラ（けみか式で調整）.vmd';
+    const path = '../vmd/camera/極楽浄土＿カメラ表情/カメラ（けみか式で調整）.vmd';
     return new Promise(resolve => {
       this.loader.loadAnimation(path, this.camera, vmd => {
         resolve(vmd);
@@ -311,7 +311,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62912" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51446" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
